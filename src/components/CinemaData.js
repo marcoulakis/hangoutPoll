@@ -4,43 +4,49 @@ import { Checkbox } from 'pretty-checkbox-react';
 
 const CinemaData = ({ cinemaData, onVote, disabled, percentage, showResults }) => {
   const showtimesAvailable = Array.isArray(cinemaData.showtimes);
+  const [checked, setChecked] = React.useState(false);
+
+  const handleClick = () => {
+    setChecked(!checked);
+    onVote();
+  };
 
   return (
     <div>
       <div style={styles.divider} />
 
-      <div style={styles.container}>
+      <div style={styles.container} onClick={() => handleClick()}>
         {!showResults && (
           <div style={styles.vote}>
-              <Checkbox
-                onChange={onVote}
-                disabled={disabled}
-                shape="round" 
-                color="info"
-                variant="fill"
-                animation="jelly"
-              />
-              
+            <Checkbox
+              checked={checked}
+              onChange={handleClick}
+              onClick={handleClick}
+              disabled={disabled}
+              shape="round" 
+              color="info"
+              variant="fill"
+              animation="jelly"
+            />
           </div>
         )}
         <div style={styles.dataContainer}>
           <h2 style={styles.heading}>
-              {cinemaData.name}
+            {cinemaData.name}
           </h2>
 
           <div style={styles.container}>
-          {showtimesAvailable ? (
-            <ul style={styles.list}>
-              {cinemaData.showtimes.map((time, index) => (
-                <li key={index} style={styles.listItem}>
-                  {time}
-                </li>
-              ))}
-            </ul>
-          )
-          : (
-            <p style={styles.noShowtimes}>No showtimes available</p>
-          )}
+            {showtimesAvailable ? (
+              <ul style={styles.list}>
+                {cinemaData.showtimes.map((time, index) => (
+                  <li key={index} style={styles.listItem}>
+                    {time}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p style={styles.noShowtimes}>No showtimes available</p>
+            )}
             <div style={styles.results}>
               {showResults && (
                 <div style={styles.percentage}>
@@ -54,18 +60,15 @@ const CinemaData = ({ cinemaData, onVote, disabled, percentage, showResults }) =
             </div>
           </div>
           <p style={styles.paragraph}>
-            <a href={cinemaData.url} style={styles.link}>
+            <a href={cinemaData.url} target="_blank" style={styles.link}>
               Comprar ingresso
             </a>          
             <br/>
             <strong style={styles.strong}>Preço da meia:</strong> R$ {cinemaData.price}
-
           </p>
         </div>
       </div>
-
     </div>
-
   );
 };
 

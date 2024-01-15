@@ -17,6 +17,8 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { app } from '../index.js';
+import ClipLoader from "react-spinners/HashLoader";
+
 
 const MovieSchedule = () => {
   const [votedCinemas, setVotedCinemas] = useState({});
@@ -28,14 +30,6 @@ const MovieSchedule = () => {
   const [hasBeenVoted, setHasBeenVoted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (existingVoteData) {
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  }, [existingVoteData]);
 
   const convertToExistingVoteData = (cinemaData) => {
     let wholeData = {};
@@ -52,52 +46,56 @@ const MovieSchedule = () => {
     });
     return(wholeData);
   }
+  const fetchUser = async () => {
+    const user = getAuth().currentUser;
+    return user;
+  };
+
+  const fetchData = async () => {
+    try {
+      const db = getFirestore(app);
+      const cinemasCollection = collection(db, 'cinemaVotes');
+      const cinemasData = await getDocs(cinemasCollection);
+
+      const cinemasArray = cinemasData.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setCinemas(cinemasArray);
+
+      if (existingVoteData == null) {
+        const user = await fetchUser();
+
+        let voted = false; 
+
+        const userVotePromises = cinemasArray.map((cinema) => {
+          console.log(user)
+          if (cinema.whoVoted.includes(user?.uid)) {
+            console.log("teet")
+            voted = true;
+          }
+        });
+
+        await Promise.all(userVotePromises);
+
+        setHasBeenVoted(voted);
+
+        if (voted) {
+          setExistingVoteData(convertToExistingVoteData(cinemasArray));
+
+          console.log(user)
+
+          setShowResults(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getAuth().currentUser;
-      return user;
-    };
 
-    const fetchData = async () => {
-      try {
-        const db = getFirestore(app);
-        const cinemasCollection = collection(db, 'cinemaVotes');
-        const cinemasData = await getDocs(cinemasCollection);
-
-        const cinemasArray = cinemasData.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setCinemas(cinemasArray);
-
-        if (existingVoteData == null) {
-          const user = await fetchUser();
-
-          let voted = false; 
-
-          const userVotePromises = cinemasArray.map((cinema) => {
-            if (cinema.whoVoted.includes(user?.uid)) {
-              console.log("teet")
-              voted = true;
-            }
-          });
-
-          await Promise.all(userVotePromises);
-
-          setHasBeenVoted(voted);
-
-          if (voted) {
-            setExistingVoteData(convertToExistingVoteData(cinemasArray));
-
-            setShowResults(true);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
 
     const unsubscribe = onAuthStateChanged(getAuth(), (authUser) => {
       if (authUser) {
@@ -176,12 +174,15 @@ const MovieSchedule = () => {
   };
 
   const signIn = async () => {
+    setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(getAuth(), provider);
+      await fetchData();
     } catch (error) {
       console.error('Error signing in:', error);
     }
+    setLoading(false);
   };
 
   const signOutUser = async () => {
@@ -194,10 +195,12 @@ const MovieSchedule = () => {
     }
   };
   const sendVotesToServer = async () => {
+
     const db = getFirestore();
     const cinemaVotesCollection = collection(db, 'cinemaVotes');
 
     for (const cinemaId in votedCinemas) {
+      setLoading(true);
 
       try {
         const voteDoc = doc(cinemaVotesCollection, cinemaId);
@@ -226,6 +229,8 @@ const MovieSchedule = () => {
         console.error('Error updating vote:', error);
       }
       handleShowResults();
+      setLoading(false);
+
     }  };
   
   return (
@@ -272,7 +277,7 @@ const MovieSchedule = () => {
                   onClick={sendVotesToServer}
                   disabled={!Object.keys(votedCinemas).length}
                 >
-                  Vote
+                  Votar
                 </button>
               ):(              
                 <div style={styles.divider} />
@@ -303,7 +308,14 @@ const MovieSchedule = () => {
           )}
           </>
         ) : (
-          <div>Loading...</div>
+          <div style={{display: "flex", flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <p>Loading...</p>
+            <ClipLoader
+              color={"#ffffff"}
+              loading={loading}
+              size={200}
+            />
+          </div>
         )
       }
     </div>
@@ -338,6 +350,7 @@ const styles = {
     borderRadius: '0.25rem',
     cursor: 'pointer',
     marginTop: '1.25rem',
+    fontSize: '1rem',
   },
   signInButton: {
     backgroundColor: '#4285f4',
@@ -347,6 +360,7 @@ const styles = {
     borderRadius: '0.25rem',
     cursor: 'pointer',
     marginTop: '1.25rem',
+    fontSize: '1rem',
   },
   signOutButton: {
     backgroundColor: '#dc3545',
