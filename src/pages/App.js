@@ -17,8 +17,7 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import { app } from '../index.js';
-import ClipLoader from "react-spinners/HashLoader";
-
+import { HashLoader } from 'react-spinners';
 
 const MovieSchedule = () => {
   const [votedCinemas, setVotedCinemas] = useState({});
@@ -310,7 +309,7 @@ const MovieSchedule = () => {
         ) : (
           <div style={{display: "flex", flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <p>Loading...</p>
-            <ClipLoader
+            <HashLoader
               color={"#ffffff"}
               loading={loading}
               size={200}
