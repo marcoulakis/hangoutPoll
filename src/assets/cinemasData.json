@@ -1,0 +1,68 @@
+{
+  "cinemas": [
+    {
+      "name": "Espaço Itaú de Cinema — Rua Frei Caneca, 569",
+      "url": "https://www.veloxtickets.com/Parceiro/P-ITAUCINE/Evento/Cinema/Sao-Paulo/Meninas-Malvadas/50559/2024-01-17/Espaco-Itau-Pompeia/POM",
+      "showtimes": ["16:20", "18:50", "21:10"],
+      "price": "15.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinemark — Shopping Market Place",
+      "url": "https://cart2.cinemark.com.br/Movie/Details/8252/688/SÃO%20PAULO/2024/1/17",
+      "showtimes": ["17:50", "20:50"],
+      "price": "17.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinemark — Shopping Eldorado",
+      "url": "https://cart2.cinemark.com.br/Movie/Details/8252/715/SÃO%20PAULO/2024/1/17",
+      "showtimes": ["15:20", "17:50", "20:30"],
+      "price": "20.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinemark — Shopping Iguatemi",
+      "url": "https://cart2.cinemark.com.br/Movie/Details/8252/2132/SÃO%20PAULO/2024/1/17",
+      "showtimes": ["15:00", "17:45", "20:20"],
+      "price": "21.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinemark — Shopping Patio Higienópolis",
+      "url": "https://cart2.cinemark.com.br/Movie/Details/8252/721/SÃO%20PAULO/2024/1/17",
+      "showtimes": ["16:10", "18:50", "21:20"],
+      "price": "21.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinemark — Shopping Villa Lobos",
+      "url": "https://cart2.cinemark.com.br/Movie/Details/8252/727/SÃO%20PAULO/2024/1/17/",
+      "showtimes": ["16:40", "19:20", "21:50"],
+      "price": "23.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinemark VIP — Shopping Cidade Jarim",
+      "url": "https://cart2.cinemark.com.br/Movie/Details/8252/682/SÃO%20PAULO/2024/1/17",
+      "showtimes": ["15:40", "18:20", "21:00"],
+      "price": "36.00",
+      "votes": 0,
+      "whoVoted": []
+    },
+    {
+      "name": "Cinépolis — Shopping JK Iguatemi",
+      "url": "https://iguatemi.com.br/jkiguatemi/cinema/meninas-malvadas",
+      "showtimes": ["14:20", "17:00", "20:00"],
+      "price": "43.50",
+      "votes": 0,
+      "whoVoted": []
+    }
+  ]
+}
