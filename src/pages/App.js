@@ -235,7 +235,7 @@ const MovieSchedule = () => {
   return (
     <div style={styles.pageContainer}>
       <div style={styles.containerHorizontal}>
-        <h1 style={styles.heading}>Horários e preços de Meninas Malvadas nos Cinemas de São Paulo</h1>
+        <h1 style={styles.heading}>Horários e preços de Pobres Criaturas nos Cinemas de São Paulo</h1>
 
         {user && (
           <button style={styles.signOutButton} onClick={signOutUser}>
